@@ -1,0 +1,18 @@
+version: '3'
+services: 
+
+    ml-flow:
+        build: ./ml-flow
+        volumes: 
+            - ./ml-flow:/ml-flow
+        ports: 
+            - "5000:5000"
+
+    jupyter-lab:
+        build:
+            context: ./
+            dockerfile: ./jupyter-lab/Dockerfile
+        volumes: 
+            - ./project:/project
+        ports: 
+            - "8888:8888"
