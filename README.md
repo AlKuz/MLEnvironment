@@ -6,8 +6,8 @@ Description
 
 There is DevOps environment for Data Science and Machine Learning. The aim is to make easier my life (or yours). It allows you to run the environment in a remote server and work in the browser.
 
-Install
--------
+Installation
+------------
 
 1. [Install Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 2. [Install Docker-Compose](https://docs.docker.com/compose/install/)
