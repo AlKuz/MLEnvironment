@@ -1,10 +1,11 @@
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:4.7.12
 
-COPY ./jupyter-lab/environment.yml /
-RUN conda update -n base conda -y && conda env update --file environment.yml
-
-COPY ./project/environment.yml /project/environment.yml
-RUN conda update -n base conda -y && conda env update --file /project/environment.yml
+RUN conda install -y -c conda-forge jupyterhub \
+    jupyterlab \
+    jupyterlab-git \
+    mlflow
+RUN jupyter labextension install -y @jupyterlab/hub-extension
+RUN jupyter lab build
 
 WORKDIR /project
 

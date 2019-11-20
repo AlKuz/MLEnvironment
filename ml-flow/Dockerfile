@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:4.7.12
 
 COPY ./environment.yml /
 RUN conda update -n base conda -y && conda env update --file environment.yml
