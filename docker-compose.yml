@@ -1,43 +1,43 @@
 version: '3'
 services: 
 
-    mlflow:
-        build: ./mlflow
-        volumes: 
-            - ./mlflow/db:/mlflow/db
-            - ./mlflow/artifacts/:/mlflow/artifacts/
-        ports: 
-            - "5555:5555"
+  mlflow:
+    build: ./mlflow
+    volumes: 
+      - ./mlflow/db:/mlflow/db
+      - ./mlflow/artifacts:/mlflow/artifacts
+    ports: 
+      - "5555:5555"
 
-    jupyter-lab:
-        build:
-            context: ./
-            dockerfile: ./jupyter-lab/Dockerfile
-        volumes: 
-            - ./project:/project
-        ports: 
-            - "8888:8888"
+  jupyter-lab:
+    build:
+        context: ./
+        dockerfile: ./jupyter-lab/Dockerfile
+    volumes: 
+        - ./project:/project
+    ports: 
+        - "8888:8888"
 
-    jupyter-hub:
-        build: ./jupyter-hub
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        environment:
-            DOCKER_JUPYTER_IMAGE: jupyter-lab
-            DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_default
-            HUB_IP: jupyter-hub
-            DOCKER_JUPYTER_IMAGE: jupyter-lab
-        labels:
-            - "traefik.enable=true"
-            - "traefik.frontend.rule=Host:jupyter.example.com"
+  jupyter-hub:
+    build: ./jupyter-hub
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+        DOCKER_JUPYTER_IMAGE: jupyter-lab
+        DOCKER_NETWORK_NAME: ${COMPOSE_PROJECT_NAME}_default
+        HUB_IP: jupyter-hub
+        DOCKER_JUPYTER_IMAGE: jupyter-lab
+    labels:
+        - "traefik.enable=true"
+        - "traefik.frontend.rule=Host:jupyter.example.com"
 
-    reverse-proxy:
-        image: traefik
-        ports:
-            - "80:80"
-            - "443:443"
-            - "8080:8080"
-        volumes:
-            - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /etc/certs:/etc/certs
+  reverse-proxy:
+    image: traefik
+    ports:
+        - "80:80"
+        - "443:443"
+        - "8080:8080"
+    volumes:
+        - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /etc/certs:/etc/certs

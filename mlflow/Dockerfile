@@ -6,7 +6,7 @@ RUN conda install -c conda-forge mlflow \
     && mkdir -p /mlflow/db
 
 CMD mlflow server \
-    --backend-store-uri /mlflow/db \
+    --backend-store-uri 'sqlite:////mlflow/db/mlflow.db' \
     --default-artifact-root /mlflow/artifacts/ \
     --host 0.0.0.0 \
     --port 5555
