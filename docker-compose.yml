@@ -10,9 +10,7 @@ services:
       - "5555:5555"
 
   jupyter-lab:
-    build:
-        context: ./
-        dockerfile: ./jupyter-lab/Dockerfile
+    build: ./jupyter-lab
     volumes: 
         - ./project:/project
     ports: 

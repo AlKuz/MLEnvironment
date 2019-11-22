@@ -1,13 +1,24 @@
 name: base
 channels:
+  - anaconda
+  - conda-forge
   - defaults
+  - pytorch
 dependencies:
+  - cpuonly
+  - HDF5
   - keras
   - matplotlib
+  - nltk
+  - numba
   - numpy
   - pandas
+  - pillow
+  - pytorch
   - scikit-image
   - scikit-learn
   - scipy
   - seaborn
-
+  - tensorflow
+  - tqdm
+  - xgboost
