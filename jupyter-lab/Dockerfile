@@ -13,9 +13,6 @@ RUN jupyter labextension install -y \
     @jupyterlab/toc \
     @oriolmirosa/jupyterlab_materialdarker \
     jupyterlab-drawio \
-    jupyterlab_tensorboard \
-    jupyterlab-topbar-extension \
-    jupyterlab-system-monitor \
     && jupyter lab build
 
 COPY ./environment.yml .
