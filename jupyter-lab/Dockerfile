@@ -1,11 +1,27 @@
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:4.7.12
 
-COPY ./jupyter-lab/environment.yml /
-RUN conda update -n base conda -y && conda env update --file environment.yml
+COPY ./environment.yml .
 
-COPY ./project/environment.yml /project/environment.yml
-RUN conda update -n base conda -y && conda env update --file /project/environment.yml
+RUN conda install -y -c conda-forge jupyterlab \
+    jupyterhub \
+    jupyterlab-git \
+    mlflow \
+    ipyleaflet && \
+    conda install -c creditx nbresuse
+
+RUN jupyter labextension install -y \
+    @jupyter-widgets/jupyterlab-manager jupyter-leaflet \
+    @lckr/jupyterlab_variableinspector \
+    @jupyterlab/toc \
+    @oriolmirosa/jupyterlab_materialdarker \
+    jupyterlab-drawio \
+    && jupyter lab build
+
+RUN conda env update --file environment.yml
 
 WORKDIR /project
 
-CMD [ "jupyter", "lab", "--ip=0.0.0.0", "--allow-root" ]
+CMD jupyter lab \
+    --ip=0.0.0.0 \
+    --port=8888 \
+    --allow-root

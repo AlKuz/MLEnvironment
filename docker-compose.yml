@@ -1,18 +1,17 @@
 version: '3'
 services: 
 
-    ml-flow:
-        build: ./ml-flow
-        volumes: 
-            - ./ml-flow:/ml-flow
-        ports: 
-            - "5000:5000"
+  mlflow:
+    build: ./mlflow
+    volumes: 
+      - ./mlflow/db:/mlflow/db
+      - ./mlflow/artifacts:/mlflow/artifacts
+    ports: 
+      - "5555:5555"
 
-    jupyter-lab:
-        build:
-            context: ./
-            dockerfile: ./jupyter-lab/Dockerfile
-        volumes: 
-            - ./project:/project
-        ports: 
-            - "8888:8888"
+  jupyter-lab:
+    build: ./jupyter-lab
+    volumes: 
+        - ./project:/project
+    ports: 
+        - "8888:8888"
