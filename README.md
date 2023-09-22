@@ -3,8 +3,13 @@ ML Environment
 
 Description
 -----------
-
 There is DevOps environment for Data Science and Machine Learning. The aim is to make easier my life (or yours). It allows you to run the environment in a remote server and work in the browser.
+
+
+Architecture
+------------
+![architecture](./docs/architecture.drawio.png)
+
 
 Installation
 ------------
