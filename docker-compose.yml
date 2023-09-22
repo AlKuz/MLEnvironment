@@ -1,17 +1,65 @@
-version: '3'
-services: 
+version: '3.8'
+
+services:
+  db:
+    restart: always
+    image: postgres:15
+    container_name: postgres_container
+    expose:
+      - "5432:5432"
+    networks:
+      - database
+    env_file:
+      - env/database.env
+    volumes:
+      - dbdata:/var/lib/postgresql/data
 
   mlflow:
-    build: ./mlflow
-    volumes: 
-      - ./mlflow/db:/mlflow/db
-      - ./mlflow/artifacts:/mlflow/artifacts
-    ports: 
+    restart: always
+    build:
+      dockerfile: ./src/services/mlflow/Dockerfile
+      args:
+        DOCKER_USER: mlflow
+    image: mlflow
+    container_name: mlflow_container
+    expose:
       - "5555:5555"
+    networks:
+      - database
+      - api-gateway
+    env_file:
+      - env/database.env
+    volumes:
+      - artifacts:/home/mlflow/artifacts
+    depends_on:
+      - db
 
-  jupyter-lab:
-    build: ./jupyter-lab
-    volumes: 
-        - ./project:/project
-    ports: 
-        - "8888:8888"
+  jupyterlab:
+    restart: always
+    build:
+      dockerfile: ./src/services/jupyterlab/Dockerfile
+    image: jupyterlab
+    container_name: jupyterlab_container
+    expose:
+      - "8888:8888"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5555
+      - MLFLOW_REGISTRY_URI=http://mlflow:5555
+    networks:
+      - api-gateway
+    volumes:
+      - ./datasets:/home/jovyan/work/datasets
+      - ./notebooks:/home/jovyan/work/notebooks
+      - ./src/scripts:/home/jovyan/work/scripts
+    depends_on:
+      - mlflow
+
+networks:
+  api-gateway:
+    driver: bridge
+  database:
+    driver: bridge
+
+volumes:
+  dbdata:
+  artifacts:
